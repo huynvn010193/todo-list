@@ -10,6 +10,7 @@ import { FormField, FormItem, FormMessage, Form } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
+import FormToolUpdate from "./form-update";
 
 export const validateFormAddTool = z
   .object({
@@ -19,7 +20,8 @@ export const validateFormAddTool = z
   })
   .strict();
 
-export default function FormTask() {
+export default function FormToolkList() {
+  const { data: tools, isLoading } = useTools();
   const form = useForm<Partial<Tool>>({
     resolver: zodResolver(validateFormAddTool),
     defaultValues: {
@@ -28,7 +30,7 @@ export default function FormTask() {
       url: "",
     },
   });
-  const { data: tools, isLoading } = useTools();
+
   const addTool = useAddTool();
 
   const reset = () => {
@@ -130,6 +132,15 @@ export default function FormTask() {
             <div>{item.title}</div>
             <div>{item.description}</div>
             <div>{item.url}</div>
+            <Button variant="outline" size="sm" className="mt-2">
+              Update
+            </Button>
+            <FormToolUpdate
+              id={item.id!}
+              title={item.title!}
+              description={item.description!}
+              url={item.url!}
+            />
           </div>
         ))}
     </div>
